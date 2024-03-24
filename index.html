@@ -468,6 +468,89 @@
       </div>
     </footer>
 
+    <div class="modal-full" id="modalCarrinho">
+      <div class="m-header">
+        <div class="container">
+          <a class="btn btn-white btn-sm float-right">Fechar</a>
+          <div class="etapas">
+            <div class="etapa etapa1 active">1</div>
+            <div class="etapa etapa2 ">2</div>
+            <div class="etapa etapa3 ">3</div>
+          </div>
+          <p class="title-carrinho mt-4">
+            <b id="lblTituloEtapa">Seu carrinho</b>
+          </p>
+        </div>
+      </div>
+      <div class="m-body">
+        <div class="container">
+          <div class="row mr-0 ml-0" id="itensCarrinho">
+            <div class="col-12 item-carrinho">
+              <div class="img-produto">
+                <img src="src/img/cardapio/burguers/gotts-complete-cheeseburger-kit-for-4.7bdc74104b193427b3fe6eae39e05b5e.jpg" alt="complete-cheeseburger-kit-for-4">
+              </div>
+              <div class="dados-produto">
+                <p class="title-produto"><b>Nome do Produto</b></p>
+                <p class="price-produto"><b>R$159,90</b></p>
+              </div>
+              <div class="add-carrinho">
+                <span class="btn-menos"><i class="fas fa-minus"></i></span>
+                <span class="add-numero-itens">0</span>
+                <span class="btn-mais"><i class="fas fa-plus"></i></span>
+                <span class="btn btn-remove"
+                  ><i class="fa fa-times"></i
+                ></span>
+              </div>
+            </div>
+
+            <div class="col-12 item-carrinho">
+              <div class="img-produto">
+                <img src="src/img/cardapio/burguers/gotts-complete-cheeseburger-kit-for-4.7bdc74104b193427b3fe6eae39e05b5e.jpg" alt="complete-cheeseburger-kit-for-4">
+              </div>
+              <div class="dados-produto">
+                <p class="title-produto"><b>Nome do Produto</b></p>
+                <p class="price-produto"><b>R$159,90</b></p>
+              </div>
+              <div class="add-carrinho">
+                <span class="btn-menos"><i class="fas fa-minus"></i></span>
+                <span class="add-numero-itens">0</span>
+                <span class="btn-mais"><i class="fas fa-plus"></i></span>
+                <span class="btn btn-remove"
+                  ><i class="fa fa-times"></i
+                ></span>
+              </div>
+            </div>
+          </div>
+          <div class="row mr-0 ml-0 hidden" id="localEntrega"></div>
+          <div class="row mr-0 ml-0 hidden" id="resumoCarrinho"></div>
+        </div>
+      </div>
+      <div class="m-footer">
+        <div class="container">
+          <div class="container-total text-right mb-4">
+            <p class="mb-0">
+              <span>Subtotal:</span>
+              <span id="lblSubTotal">R$159,90</span>
+            </p>
+            <p class="texto-entrega mb-0">
+              <span><i class="fas fa-motorcycle"></i> Entrega:</span>
+              <span id="lblValorEntrega">+ R$5,00</span>
+            </p>
+            <p class="texto-total mb-0">
+              <span><b>Total:</b></span>
+              <span class="valor-total" id="lblValorTotal"><b>R$164,90</b></span>
+            </p>
+          </div>
+
+          <a class="btn btn-yellow float-right" id="btnEtapaPedido">Continuar</a>
+          <a class="btn btn-yellow float-right hidden" id="btnEtapaEndereco">Revisar Pedido</a>
+          <a class="btn btn-yellow float-right hidden" id="btnEtapaResumo">Enviar pedido</a>
+
+          <a class="btn btn-white float-right mr-3 hidden" id="btnVoltar">Voltar</a>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript" src="src/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="src/js/modernizr-3.5.0.min.js"></script>
     <script type="text/javascript" src="src/js/bootstrap.min.js"></script>
