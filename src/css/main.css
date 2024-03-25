@@ -630,3 +630,29 @@ footer {
   color: var(--color-primary);
   font-size: 1.5rem;
 }
+
+/* estilos para página do formulário de entrega */
+
+.form-control {
+  background-color: var(--color-white);
+  color: var(--color-black) !important;
+  border-radius: 20px;
+  padding: 15px 25px;
+  font-size: 1.25rem;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+}
+
+select.form-control {
+  height: 60px !important;
+}
+
+.container-cep .form-control {
+  padding-left: 75px;
+}
+
+.container-cep .btn {
+  position: absolute;
+  right: 25px;
+  top: 38px;
+}
