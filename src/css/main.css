@@ -710,3 +710,62 @@ select.form-control {
 .cidade-endereco {
   margin-bottom: 0;
 }
+
+.badge-total-carrinho {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  background-color: var(--color-secondary);
+  border-radius: 50px;
+  right: -5px;
+  top: -5px;
+  font-size: 1.1428rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* icone que vai mostar a qtde no carrinho fixo na tela */
+.botao-carrinho {
+  position: fixed;
+  right: 30px;
+  bottom: 50px;
+  height: 50px;
+  width: 50px;
+  background-color: var(--color-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  color: var(--color-blackChapado) !important;
+  border-radius: 50px;
+  cursor: pointer;
+  z-index: 1; /*para sobrepor aos elementos*/
+}
+
+/* mensagens na tela do usuário */
+.container-mensagens {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 9999;
+}
+
+/* alterar cor de mensagens na tela do usuário */
+.toast {
+  color: var(--color-white);
+  padding: 10px 25px;
+  font-size: 1.125rem;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.toast.red {
+  background-color: var(--color-red);
+}
+
+.toast.green {
+  background-color: var(--color-green);
+}
