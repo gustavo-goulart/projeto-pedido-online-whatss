@@ -8,9 +8,9 @@ var MEU_CARRINHO = [];
 var MEU_ENDERECO = null;
 
 var VALOR_CARRINHO = 0;
-var VALOR_ENTREGA = 10.0;
+var VALOR_ENTREGA = 7.5;
 
-var CELULAR_EMPRESA = "5541991229884";
+var CELULAR_EMPRESA = "5517991234567";
 
 cardapio.eventos = {
   init: () => {
@@ -24,6 +24,7 @@ cardapio.metodos = {
   // obtem a lista de itens do cardápio
   obterItensCardapio: (categoria = "burgers", vermais = false) => {
     var filtro = MENU[categoria];
+    console.log(filtro);
 
     if (!vermais) {
       $("#itensCardapio").html("");
@@ -113,16 +114,15 @@ cardapio.metodos = {
           MEU_CARRINHO.push(item[0]);
         }
 
+        cardapio.metodos.mensagem("Item adicionado ao carrinho", "green");
         $("#qntd-" + id).text(0);
 
         cardapio.metodos.atualizarBadgeTotal();
-
-        cardapio.metodos.mensagem("Item adicionado ao carrinho", "green");
       }
     }
   },
 
-  // atualiza o botões totais do carrinho de compras
+  // atualiza o badge de totais dos botões "Meu carrinho"
   atualizarBadgeTotal: () => {
     var total = 0;
 
@@ -141,7 +141,7 @@ cardapio.metodos = {
     $(".badge-total-carrinho").html(total);
   },
 
-  //abrir modal de carrinho
+  // abrir a modal de carrinho
   abrirCarrinho: (abrir) => {
     if (abrir) {
       $("#modalCarrinho").removeClass("hidden");
@@ -151,7 +151,7 @@ cardapio.metodos = {
     }
   },
 
-  //alterar texto e carregar botões das etapas
+  // altera os texto e exibe os botões das etapas
   carregarEtapa: (etapa) => {
     if (etapa == 1) {
       $("#lblTituloEtapa").text("Seu carrinho:");
@@ -202,13 +202,13 @@ cardapio.metodos = {
     }
   },
 
-  //botão voltar etapa no carrinho de compras
+  // botão de voltar etapa
   voltarEtapa: () => {
     let etapa = $(".etapa.active").length;
     cardapio.metodos.carregarEtapa(etapa - 1);
   },
 
-  //carrega a lista de itens do carrinho
+  // carrega a lista de itens do carrinho
   carregarCarrinho: () => {
     cardapio.metodos.carregarEtapa(1);
 
@@ -238,7 +238,7 @@ cardapio.metodos = {
     }
   },
 
-  //diminuir quantidade do item no carrinho
+  // diminuir quantidade do item no carrinho
   diminuirQuantidadeCarrinho: (id) => {
     let qntdAtual = parseInt($("#qntd-carrinho-" + id).text());
 
@@ -250,7 +250,7 @@ cardapio.metodos = {
     }
   },
 
-  //aumenta quantidade do item no carrinho
+  // aumentar quantidade do item no carrinho
   aumentarQuantidadeCarrinho: (id) => {
     let qntdAtual = parseInt($("#qntd-carrinho-" + id).text());
     $("#qntd-carrinho-" + id).text(qntdAtual + 1);
@@ -354,7 +354,153 @@ cardapio.metodos = {
     }
   },
 
-  //mensagem padrão de alertas na página
+  // validação antes de prosseguir para a etapa 3
+  resumoPedido: () => {
+    let cep = $("#txtCEP").val().trim();
+    let endereco = $("#txtEndereco").val().trim();
+    let bairro = $("#txtBairro").val().trim();
+    let cidade = $("#txtCidade").val().trim();
+    let uf = $("#ddlUf").val().trim();
+    let numero = $("#txtNumero").val().trim();
+    let complemento = $("#txtComplemento").val().trim();
+
+    if (cep.length <= 0) {
+      cardapio.metodos.mensagem("Informe o CEP, por favor.");
+      $("#txtCEP").focus();
+      return;
+    }
+
+    if (endereco.length <= 0) {
+      cardapio.metodos.mensagem("Informe o Endereço, por favor.");
+      $("#txtEndereco").focus();
+      return;
+    }
+
+    if (bairro.length <= 0) {
+      cardapio.metodos.mensagem("Informe o Bairro, por favor.");
+      $("#txtBairro").focus();
+      return;
+    }
+
+    if (cidade.length <= 0) {
+      cardapio.metodos.mensagem("Informe a Cidade, por favor.");
+      $("#txtCidade").focus();
+      return;
+    }
+
+    if (uf == "-1") {
+      cardapio.metodos.mensagem("Informe a UF, por favor.");
+      $("#ddlUf").focus();
+      return;
+    }
+
+    if (numero.length <= 0) {
+      cardapio.metodos.mensagem("Informe o Número, por favor.");
+      $("#txtNumero").focus();
+      return;
+    }
+
+    MEU_ENDERECO = {
+      cep: cep,
+      endereco: endereco,
+      bairro: bairro,
+      cidade: cidade,
+      uf: uf,
+      numero: numero,
+      complemento: complemento,
+    };
+
+    cardapio.metodos.carregarEtapa(3);
+    cardapio.metodos.carregarResumo();
+  },
+
+  // carrega a etapa de Resumo do pedido
+  carregarResumo: () => {
+    $("#listaItensResumo").html("");
+
+    $.each(MEU_CARRINHO, (i, e) => {
+      let temp = cardapio.templates.itemResumo
+        .replace(/\${img}/g, e.img)
+        .replace(/\${nome}/g, e.name)
+        .replace(/\${preco}/g, e.price.toFixed(2).replace(".", ","))
+        .replace(/\${qntd}/g, e.qntd);
+
+      $("#listaItensResumo").append(temp);
+    });
+
+    $("#resumoEndereco").html(
+      `${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`
+    );
+    $("#cidadeEndereco").html(
+      `${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep} ${MEU_ENDERECO.complemento}`
+    );
+
+    cardapio.metodos.finalizarPedido();
+  },
+
+  // Atualiza o link do botão do WhatsApp
+  finalizarPedido: () => {
+    if (MEU_CARRINHO.length > 0 && MEU_ENDERECO != null) {
+      var texto = "Olá! gostaria de fazer um pedido:";
+      texto += `\n*Itens do pedido:*\n\n\${itens}`;
+      texto += "\n*Endereço de entrega:*";
+      texto += `\n${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`;
+      texto += `\n${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep} ${MEU_ENDERECO.complemento}`;
+      texto += `\n\n*Total (com entrega): R$ ${(VALOR_CARRINHO + VALOR_ENTREGA)
+        .toFixed(2)
+        .replace(".", ",")}*`;
+
+      var itens = "";
+
+      $.each(MEU_CARRINHO, (i, e) => {
+        itens += `*${e.qntd}x* ${e.name} ....... R$ ${e.price
+          .toFixed(2)
+          .replace(".", ",")} \n`;
+
+        // último item
+        if (i + 1 == MEU_CARRINHO.length) {
+          texto = texto.replace(/\${itens}/g, itens);
+
+          // converte a URL
+          let encode = encodeURI(texto);
+          let URL = `https://wa.me/${CELULAR_EMPRESA}?text=${encode}`;
+
+          $("#btnEtapaResumo").attr("href", URL);
+        }
+      });
+    }
+  },
+
+  // carrega o link do botão reserva
+  carregarBotaoReserva: () => {
+    var texto = "Olá! gostaria de fazer uma *reserva*";
+
+    let encode = encodeURI(texto);
+    let URL = `https://wa.me/${CELULAR_EMPRESA}?text=${encode}`;
+
+    $("#btnReserva").attr("href", URL);
+  },
+
+  // carrega o botão de ligar
+  carregarBotaoLigar: () => {
+    $("#btnLigar").attr("href", `tel:${CELULAR_EMPRESA}`);
+  },
+
+  // abre o depoimento
+  abrirDepoimento: (depoimento) => {
+    $("#depoimento-1").addClass("hidden");
+    $("#depoimento-2").addClass("hidden");
+    $("#depoimento-3").addClass("hidden");
+
+    $("#btnDepoimento-1").removeClass("active");
+    $("#btnDepoimento-2").removeClass("active");
+    $("#btnDepoimento-3").removeClass("active");
+
+    $("#depoimento-" + depoimento).removeClass("hidden");
+    $("#btnDepoimento-" + depoimento).addClass("active");
+  },
+
+  // mensagens
   mensagem: (texto, cor = "red", tempo = 3500) => {
     let id = Math.floor(Date.now() * Math.random()).toString();
 
