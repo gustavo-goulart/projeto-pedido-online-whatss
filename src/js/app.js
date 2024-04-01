@@ -141,21 +141,29 @@ cardapio.metodos = {
     $(".badge-total-carrinho").html(total);
   },
 
+  //abrir modal de carrinho
+  abrirCarrinho: (abrir) => {
+    if (abrir) {
+      $("#modalCarrinho").removeClass("hidden");
+    } else {
+      $("#modalCarrinho").addClass("hidden");
+    }
+  },
+
   //mensagem padrão de alertas na página
-  mensagem: (texto, cor = "red", tempo = 2000) => {
-    //remover mensagem da tela
+  mensagem: (texto, cor = "red", tempo = 3500) => {
     let id = Math.floor(Date.now() * Math.random()).toString();
 
     let msg = `<div id="msg-${id}" class="animated fadeInDown toast ${cor}">${texto}</div>`;
 
     $("#container-mensagens").append(msg);
 
-    //tempo para executar a função
     setTimeout(() => {
-      //remover mensagem de alerta na página
       $("#msg-" + id).removeClass("fadeInDown");
       $("#msg-" + id).addClass("fadeOutUp");
-      $("#msg-" + id).remove();
+      setTimeout(() => {
+        $("#msg-" + id).remove();
+      }, 800);
     }, tempo);
   },
 };
