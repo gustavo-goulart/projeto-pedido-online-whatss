@@ -69,44 +69,47 @@ cardapio.metodos = {
   },
 
   //adicionar produto ao carrinho o item do cardápio
-  // adicionarAoCarrinho: (id) => {
-  //   let qntdAtual = parseInt($("#qntd-" + id).text());
+  adicionarAoCarrinho: (id) => {
+    let qntdAtual = parseInt($("#qntd-" + id).text());
 
-  //   if (qntdAtual > 0) {
-  //     //obter a categoria ativa
-  //     var categoria = $(".container-menu a.active")
-  //       .attr("id")
-  //       .split("menu-")[1];
+    if (qntdAtual > 0) {
+      // obter a categoria ativa
+      var categoria = $(".container-menu a.active")
+        .attr("id")
+        .split("menu-")[1];
 
-  //     //obter a lista de itens
-  //     let filtro = MENU[categoria];
+      // obtem a lista de itens
+      let filtro = MENU[categoria];
 
-  //     //obter o  item
-  //     let item = $.grep(filtro, (e, i) => {
-  //       return e.id == id;
-  //     });
+      // obtem o item
+      let item = $.grep(filtro, (e, i) => {
+        return e.id == id;
+      });
 
-  //     if (item.length > 0) {
-  //       //validar se já existe esse item no carrinho
-  //       let existe = $.grep(MEU_CARRINHO, (elem, index) => {
-  //         return elem.id == id;
-  //       });
+      if (item.length > 0) {
+        // validar se já existe esse item no carrinho
+        let existe = $.grep(MEU_CARRINHO, (elem, index) => {
+          return elem.id == id;
+        });
 
-  //       //caso já exista o item no carrinho só altera a quantidade
-  //       if (existe.length > 0) {
-  //         let objIndex = MEU_CARRINHO.findIndex((obj => obj.id == id));
-  //         MEU_CARRINHO[objIndex].qntd = MEU_CARRINHO[objIndex].qntd + qntdAtual;
-  //       }
-  //       //caso não exista o item no carrinho adicio-na ele
-  //       else {
-  //         item[0].qntd = qntdAtual;
-  //         MEU_CARRINHO.push(item[0]);
-  //       }
+        // caso já exista o item no carrinho, só altera a quantidade
+        if (existe.length > 0) {
+          let objIndex = MEU_CARRINHO.findIndex((obj) => obj.id == id);
+          MEU_CARRINHO[objIndex].qntd = MEU_CARRINHO[objIndex].qntd + qntdAtual;
+        }
+        // caso ainda não exista o item no carrinho, adiciona ele
+        else {
+          item[0].qntd = qntdAtual;
+          MEU_CARRINHO.push(item[0]);
+        }
 
-  //       $("#qntd-" + id).text(0);
-  //     }
-  //   }
-  // },
+        cardapio.metodos.mensagem("Item adicionado ao carrinho", "green");
+        $("#qntd-" + id).text(0);
+
+        cardapio.metodos.atualizarBadgeTotal();
+      }
+    }
+  },
 };
 
 cardapio.templates = {
