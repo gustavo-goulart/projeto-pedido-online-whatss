@@ -234,7 +234,6 @@ cardapio.metodos = {
       $("#itensCarrinho").html(
         '<p class="carrinho-vazio"><i class="fa fa-shopping-bag"></i> Seu carrinho está vazio.</p>'
       );
-
       cardapio.metodos.carregarValores();
     }
   },
@@ -304,6 +303,55 @@ cardapio.metodos = {
         );
       }
     });
+  },
+
+  // carregar a etapa enderecos
+  carregarEndereco: () => {
+    if (MEU_CARRINHO.length <= 0) {
+      cardapio.metodos.mensagem("Seu carrinho está vazio.");
+      return;
+    }
+
+    cardapio.metodos.carregarEtapa(2);
+  },
+
+  // API ViaCEP
+  buscarCep: () => {
+    // cria a variavel com o valor do cep
+    var cep = $("#txtCEP").val().trim().replace(/\D/g, "");
+
+    // verifica se o CEP possui valor informado
+    if (cep != "") {
+      // Expressão regular para validar o CEP
+      var validacep = /^[0-9]{8}$/;
+
+      if (validacep.test(cep)) {
+        $.getJSON(
+          "https://viacep.com.br/ws/" + cep + "/json/?callback=?",
+          function (dados) {
+            if (!("erro" in dados)) {
+              // Atualizar os campos com os valores retornados
+              $("#txtEndereco").val(dados.logradouro);
+              $("#txtBairro").val(dados.bairro);
+              $("#txtCidade").val(dados.localidade);
+              $("#ddlUf").val(dados.uf);
+              $("#txtNumero").focus();
+            } else {
+              cardapio.metodos.mensagem(
+                "CEP não encontrado. Preencha as informações manualmente."
+              );
+              $("#txtEndereco").focus();
+            }
+          }
+        );
+      } else {
+        cardapio.metodos.mensagem("Formato do CEP inválido.");
+        $("#txtCEP").focus();
+      }
+    } else {
+      cardapio.metodos.mensagem("Informe o CEP, por favor.");
+      $("#txtCEP").focus();
+    }
   },
 
   //mensagem padrão de alertas na página
